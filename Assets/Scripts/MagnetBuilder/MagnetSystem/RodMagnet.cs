@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class RodMagnet : MagnetBehaviour
 {
-	private Transform lastContact;
+
 	private void Start()
 	{
 		CheckRoot();
@@ -14,42 +14,44 @@ public class RodMagnet : MagnetBehaviour
 		SnappingTag = "RodSnapPoint";
 	}
 
-	public override void SetSnapPoint()
+	public override void AlignWithSnapPoint(Transform snapPoint)
 	{
+		transform.DORotate(snapPoint.localRotation.eulerAngles, 0.25f)
+		         .SetEase(Ease.InOutBack);
 	}
 
 
 	public override void SnapMagnet(Transform originalNode, Transform contactPoint)
 	{
-		lastContact = contactPoint;
+		EnableSnapMode();
+		//Snap Magnet Logic
+		//Rod is Always Right Aligned with the Ball
+		contactPoint.GetComponent<SnapPoint>().SetChildNode(originalNode);
+		originalNode.GetComponent<IMagnetBehaviour>().GetNode(SnapDirection.Right).SetChildNode(contactPoint);
+
+		var snapPoint = originalNode.GetComponent<IMagnetBehaviour>().GetNode(SnapDirection.Left);
+		snapPoint.snapDirection = SnapPoint.GetInverseDirection(contactPoint.GetComponent<SnapPoint>().snapDirection);
+
+
 		var point = contactPoint.transform;
+
+		//Tweens
 		transform.DORotate(point.rotation.eulerAngles, 0.25f)
 		         .SetEase(Ease.InOutBack)
 		         .OnComplete(() =>
 		          {
 			          transform.SetParent(point.root);
-			          CheckPoints();
+			          //Check for Overlaps after Rotation Completes
+			          snapPoint.CheckOverlap(originalNode);
 		          });
 
 		transform.DOMove(point.position, 0.25f)
 		         .SetEase(Ease.InOutBack);
 
-		point?.GetComponent<MaterialPropertyHandler>().SetColor(new Color(1, 1, 1, 0f)); return;
+		point.GetComponent<MaterialPropertyHandler>().SetColor(new Color(1, 1, 1, 0f));
 
 
-	}
 
 
-	public void CheckPoints()
-	{
-		foreach (var snapPoint in snapPoints)
-		{
-			snapPoint.Check(lastContact);
-		}
-	}
-
-	public override SnapPoint GetNode(SnapDirection snapDirection)
-	{
-		return snapPoints.Find(point => point.snapDirection == snapDirection);
 	}
 }

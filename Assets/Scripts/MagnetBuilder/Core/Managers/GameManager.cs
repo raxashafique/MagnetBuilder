@@ -29,9 +29,9 @@ namespace MagnetBuilder.Core.Managers
 
 			//Adding Transitions
 			At(splash, mainMenu, CanShowMainMenu());
-			At(mainMenu, tutorial, CanPlayTutorial());
+			// At(mainMenu, tutorial, CanPlayTutorial());
 			At(mainMenu, gameplay, CanPlayGame());
-			At(tutorial, gameplay, () => tutorial.HasTutorialFinished);
+			// At(tutorial, gameplay, () => tutorial.HasTutorialFinished);
 			At(gameplay, win, GameToWin());
 			At(gameplay, fail, GameToFail());
 			At(win, mainMenu, WinToMainMenu());

@@ -5,9 +5,9 @@ public interface IMagnetBehaviour
 {
 	bool IsSnapped { get; }
 	string SnappingTag { get; set; }
-	void SnapMode();
-	void DragMode();
-	void SetSnapPoint();
+	void EnableSnapMode();
+	void EnableDragMode();
+	void AlignWithSnapPoint(Transform snapPoint);
 
 	void SnapMagnet(Transform originalNode, Transform contactPoint);
 

@@ -7,24 +7,27 @@ using UnityEngine;
 
 public class BallMagnet : MagnetBehaviour
 {
-    private Transform lastContact;
     private void Start()
     {
-
         CheckRoot();
         SetParentNodes();
         SnappingTag = "BallSnapPoint";
-
     }
 
-    public override void SetSnapPoint()
+    public override void AlignWithSnapPoint(Transform snapPoint)
     {
-
+        return;
     }
 
     public override void SnapMagnet(Transform originalNode, Transform contactPoint)
     {
-        lastContact = contactPoint;
+        EnableSnapMode();
+
+        //Snap Magnet Logic
+        //Rod is Always Right Aligned with the Ball
+        contactPoint.GetComponent<SnapPoint>().SetChildNode(originalNode);
+        originalNode.GetComponent<IMagnetBehaviour>().GetNode(contactPoint.GetComponent<SnapPoint>().snapDirection).SetChildNode(contactPoint);
+
         var point = contactPoint.transform;
         transform.DORotate(Vector3.zero, 0.25f)
                  .SetEase(Ease.InOutBack);
@@ -35,29 +38,12 @@ public class BallMagnet : MagnetBehaviour
                   {
 
                       transform.SetParent(point.transform.root);
-                      CheckPoints();
+                      contactPoint.GetComponent<SnapPoint>().CheckOverlap(originalNode);
                       // snapPoints[0].isOccupied = true;
                   });
 
         point?.GetComponent<MaterialPropertyHandler>().SetColor(new Color(1, 1, 1, 0f));
-    }
-
-
-
-    public void CheckPoints()
-    {
-        foreach (var snapPoint in snapPoints)
-        {
-            snapPoint.Check(lastContact);
-        }
-    }
-
-
-
-
-    public override SnapPoint GetNode(SnapDirection snapDirection)
-    {
-        return snapPoints.Find(point => point.snapDirection == snapDirection);
 
     }
+
 }

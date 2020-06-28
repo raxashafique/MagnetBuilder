@@ -13,11 +13,6 @@ public abstract class MagnetBehaviour : MonoBehaviour, IMagnetBehaviour
 	public bool IsSnapped => isSnapped;
 	public string SnappingTag { get; set; }
 
-	private void Start()
-	{
-		//CheckRoot();
-		//SetParentNodes();
-	}
 
 	protected void SetParentNodes()
 	{
@@ -32,11 +27,11 @@ public abstract class MagnetBehaviour : MonoBehaviour, IMagnetBehaviour
 	{
 		if (!transform.root.name.Equals("Pivot"))
 		{
-			DragMode();
+			EnableDragMode();
 		}
 	}
 
-	public virtual void SnapMode()
+	public virtual void EnableSnapMode()
 	{
 		isSnapped = true;
 		gameObject.layer = LayerMask.NameToLayer("World");
@@ -46,7 +41,7 @@ public abstract class MagnetBehaviour : MonoBehaviour, IMagnetBehaviour
 		}
 	}
 
-	public virtual void DragMode()
+	public virtual void EnableDragMode()
 	{
 		//print($"DragMode");
 		isSnapped = false;
@@ -57,10 +52,14 @@ public abstract class MagnetBehaviour : MonoBehaviour, IMagnetBehaviour
 		}
 	}
 
-	public abstract void SetSnapPoint();
+	public abstract void AlignWithSnapPoint(Transform snapPoint);
 
 	public abstract void SnapMagnet(Transform originalNode, Transform snapPoints1);
-	public abstract SnapPoint GetNode(SnapDirection snapDirection);
+
+	public virtual SnapPoint GetNode(SnapDirection snapDirection)
+	{
+		return snapPoints.Find(point => point.snapDirection == snapDirection);
+	}
 
 
 	[Button(ButtonSizes.Medium)]

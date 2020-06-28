@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CustomUtilities;
-using DG.Tweening;
 using MagnetBuilder.MagnetSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class SnappingSystem : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
 {
+
+	private IMagnetBehaviour m_magnetBehaviour;
+	private Collider m_currentContactCollider;
+	private List<Collider> m_inContactColliders;
 	private Camera m_mainCamera;
 
-	private List<Collider> m_inContactColliders;
-	private Collider m_currentContactCollider;
-	private IMagnetBehaviour m_magnetBehaviour;
 
 	// Start is called before the first frame update
 	void Start()
@@ -47,7 +46,7 @@ public class SnappingSystem : MonoBehaviour, IDragHandler, IPointerUpHandler, IP
 
 		if (m_currentContactCollider != m_inContactColliders[0])
 		{
-			m_currentContactCollider?.GetComponent<MaterialPropertyHandler>()
+			m_currentContactCollider.GetComponent<MaterialPropertyHandler>()
 			                         .SetColor(new Color(1, 1, 1, 0f));
 		}
 
@@ -57,8 +56,7 @@ public class SnappingSystem : MonoBehaviour, IDragHandler, IPointerUpHandler, IP
 		                        .SetColor(new Color(1, 1, 1, 0.5f));
 
 
-		transform.DORotate(m_currentContactCollider.transform.rotation.eulerAngles, 0.25f)
-		         .SetEase(Ease.InOutBack);
+		m_magnetBehaviour.AlignWithSnapPoint(m_currentContactCollider.transform);
 	}
 
 	private void OnTriggerExit(Collider other)
@@ -100,9 +98,7 @@ public class SnappingSystem : MonoBehaviour, IDragHandler, IPointerUpHandler, IP
 		if (m_magnetBehaviour.IsSnapped || m_currentContactCollider.GetComponent<SnapPoint>().isOccupied)
 			return;
 
-
 		m_magnetBehaviour.SnapMagnet(this.transform, m_currentContactCollider.transform);
-		m_magnetBehaviour.SnapMode();
 	}
 
 
