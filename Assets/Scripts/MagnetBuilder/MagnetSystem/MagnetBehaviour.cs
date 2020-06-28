@@ -59,7 +59,7 @@ public abstract class MagnetBehaviour : MonoBehaviour, IMagnetBehaviour
 
 	public abstract void SetSnapPoint();
 
-	public abstract void SnapMagnet(Transform originalNode, Collider[] snapPoints1);
+	public abstract void SnapMagnet(Transform originalNode, Transform snapPoints1);
 	public abstract SnapPoint GetNode(SnapDirection snapDirection);
 
 

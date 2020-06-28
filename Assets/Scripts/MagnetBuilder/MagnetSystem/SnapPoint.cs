@@ -11,11 +11,14 @@ namespace MagnetBuilder.MagnetSystem
 	{
 		public SnapDirection snapDirection;
 		public bool isOccupied;
+		[SerializeField] private Transform parentNode;
+		[SerializeField] private Transform childNode;
 
-		private Transform parentNode;
-		private Transform childNode;
 
-
+		private void OnDrawGizmos()
+		{
+			Gizmos.DrawWireSphere(transform.position, 0.2f);
+		}
 
 		public void SetParentNode(Transform node)
 		{
@@ -38,6 +41,20 @@ namespace MagnetBuilder.MagnetSystem
 			}
 		}
 
+		public Collider[] CheckOverlap()
+		{
+			print($"Calling Check on {this.name}");
+			var test = Physics.OverlapSphere(transform.position, 1f,
+				LayerMask.GetMask("World"),
+				QueryTriggerInteraction.Collide);
+
+			foreach (var collider1 in test)
+			{
+				print($"{collider1.name}");
+			}
+
+			return test;
+		}
 
 
 		private void OnTriggerEnter(Collider other)

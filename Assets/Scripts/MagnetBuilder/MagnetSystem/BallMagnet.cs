@@ -21,9 +21,9 @@ public class BallMagnet : MagnetBehaviour
 
     }
 
-    public override void SnapMagnet(Transform originalNode, Collider[] contactPoints)
+    public override void SnapMagnet(Transform originalNode, Transform contactPoint)
     {
-        var point = contactPoints[0].transform;
+        var point = contactPoint.transform;
         transform.DORotate(Vector3.zero, 0.25f)
                  .SetEase(Ease.InOutBack);
 
@@ -50,14 +50,36 @@ public class BallMagnet : MagnetBehaviour
         //print($"SnapNodeName: {snapPoints1.name} with Parent: {snapPoints1.transform.parent.name}"); //XYZ with Ball_1
 
 
-            point.transform.parent.GetComponent<IMagnetBehaviour>()
-                        .GetNode(point.GetComponent<SnapPoint>().snapDirection)
-                        .SetChildNode(point.transform);
+        var contactPoints = contactPoint.GetComponent<SnapPoint>().CheckOverlap();
+
+        foreach (var collider1 in contactPoints)
+        {
+            print($"{collider1.name}");
+        }
+        print($"_____________________________");
+        foreach (var contact in contactPoints)
+        {
+            if (contact.CompareTag("BallSnapPoint"))
+            {
+                print($"{contact.name}");
+                contact.GetComponent<SnapPoint>().SetChildNode(transform);
+            }
+        }
+
+        #region MyRegion
+
+        point.transform.parent.GetComponent<IMagnetBehaviour>()
+             .GetNode(point.GetComponent<SnapPoint>().snapDirection)
+             .SetChildNode(point.transform);
 
 
-            var pole = GetInverseDirection(point.GetComponent<SnapPoint>().snapDirection);
+        var pole = GetInverseDirection(point.GetComponent<SnapPoint>().snapDirection);
 
-            originalNode.GetComponent<IMagnetBehaviour>().GetNode(pole).SetChildNode(point.transform.parent);
+        originalNode.GetComponent<IMagnetBehaviour>().GetNode(pole).SetChildNode(point.transform.parent);
+
+        #endregion
+
+
 
 
         // foreach (var contactPoint in contactPoints)

@@ -9,7 +9,7 @@ public interface IMagnetBehaviour
 	void DragMode();
 	void SetSnapPoint();
 
-	void SnapMagnet(Transform originalNode, Collider[] contactPoints);
+	void SnapMagnet(Transform originalNode, Transform contactPoint);
 
 	SnapPoint GetNode(SnapDirection snapDirection);
 }

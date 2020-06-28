@@ -101,7 +101,7 @@ public class SnappingSystem : MonoBehaviour, IDragHandler, IPointerUpHandler, IP
 			return;
 
 
-		m_magnetBehaviour.SnapMagnet(this.transform, m_inContactColliders.ToArray());
+		m_magnetBehaviour.SnapMagnet(this.transform, m_currentContactCollider.transform);
 		m_magnetBehaviour.SnapMode();
 	}
 
