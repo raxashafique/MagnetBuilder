@@ -36,10 +36,8 @@ public class BallMagnet : MagnetBehaviour
                  .SetEase(Ease.InOutBack)
                  .OnComplete(() =>
                   {
-
                       transform.SetParent(point.transform.root);
                       contactPoint.GetComponent<SnapPoint>().CheckOverlap(originalNode);
-                      // snapPoints[0].isOccupied = true;
                   });
 
         point?.GetComponent<MaterialPropertyHandler>().SetColor(new Color(1, 1, 1, 0f));
