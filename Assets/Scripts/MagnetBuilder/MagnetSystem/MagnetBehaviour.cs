@@ -15,8 +15,18 @@ public abstract class MagnetBehaviour : MonoBehaviour, IMagnetBehaviour
 
 	private void Start()
 	{
-		CheckRoot();
+		//CheckRoot();
+		//SetParentNodes();
 	}
+
+	protected void SetParentNodes()
+	{
+		foreach (var snapPoint in snapPoints)
+		{
+			snapPoint.SetParentNode(transform);
+		}
+	}
+
 
 	protected void CheckRoot()
 	{
@@ -49,7 +59,8 @@ public abstract class MagnetBehaviour : MonoBehaviour, IMagnetBehaviour
 
 	public abstract void SetSnapPoint();
 
-	public abstract void SnapMagnet(Transform snapPoint);
+	public abstract void SnapMagnet(Transform originalNode, Collider[] snapPoints1);
+	public abstract SnapPoint GetNode(SnapDirection snapDirection);
 
 
 	[Button(ButtonSizes.Medium)]

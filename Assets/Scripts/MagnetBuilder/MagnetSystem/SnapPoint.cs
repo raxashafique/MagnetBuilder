@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -8,42 +9,53 @@ namespace MagnetBuilder.MagnetSystem
 	[System.Serializable]
 	public class SnapPoint : MonoBehaviour
 	{
-		private IMagnetBehaviour m_magnetBehaviour;
 		public SnapDirection snapDirection;
 		public bool isOccupied;
 
-		private List<Collider> m_inContactColliders;
+		private Transform parentNode;
+		private Transform childNode;
 
-		private void Start()
+
+
+		public void SetParentNode(Transform node)
 		{
-			m_magnetBehaviour = transform.parent.GetComponent<IMagnetBehaviour>();
-			m_inContactColliders = new List<Collider>();
+			parentNode = node;
 		}
-		//
-		// public void OccupyContactPoints()
-		// {
-		// 	foreach (var contactCollider in m_inContactColliders)
-		// 	{
-		// 		contactCollider.GetComponent<SnapPoint>().isOccupied = true;
-		// 	}
-		// }
-		//
-		// private void OnTriggerEnter(Collider other)
-		// {
-		// 	if (other.GetComponent<SnapPoint>())
-		// 	{
-		// 		m_inContactColliders.Add(other);
-		// 	}
-		// }
-		//
-		// private void OnTriggerExit(Collider other)
-		// {
-		// 	if (other.GetComponent<SnapPoint>())
-		// 	{
-		// 		m_inContactColliders.Remove(other);
-		// 	}
-		//
-		// }
+
+		public void SetChildNode(Transform node)
+		{
+			childNode = node;
+		}
+
+		private void Update()
+		{
+			if (isOccupied)
+				return;
+
+			if (parentNode != null && childNode != null)
+			{
+				isOccupied = true;
+			}
+		}
+
+
+
+		private void OnTriggerEnter(Collider other)
+		{
+			// if (other.GetComponent<SnapPoint>())
+			// {
+			// 	//print($"SnapPointTriggeredWith {other.name}");
+			// 	m_inContactColliders.Add(other);
+			// }
+		}
+
+		private void OnTriggerExit(Collider other)
+		{
+			// if (other.GetComponent<SnapPoint>())
+			// {
+			// 	m_inContactColliders.Remove(other);
+			// }
+		}
 	}
 
 

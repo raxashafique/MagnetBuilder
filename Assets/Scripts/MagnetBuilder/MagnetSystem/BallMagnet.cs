@@ -1,4 +1,5 @@
-﻿using CustomUtilities;
+﻿using System;
+using CustomUtilities;
 using DG.Tweening;
 using MagnetBuilder.MagnetSystem;
 using TMPro;
@@ -9,8 +10,10 @@ public class BallMagnet : MagnetBehaviour
     private void Start()
     {
 
-        base.CheckRoot();
+        CheckRoot();
+        SetParentNodes();
         SnappingTag = "BallSnapPoint";
+
     }
 
     public override void SetSnapPoint()
@@ -18,42 +21,100 @@ public class BallMagnet : MagnetBehaviour
 
     }
 
-    public override void SnapMagnet(Transform snapPoint)
+    public override void SnapMagnet(Transform originalNode, Collider[] contactPoints)
     {
+        var point = contactPoints[0].transform;
         transform.DORotate(Vector3.zero, 0.25f)
                  .SetEase(Ease.InOutBack);
 
-        transform.DOMove(snapPoint.position, 0.25f)
+        transform.DOMove(point.position, 0.25f)
                  .SetEase(Ease.InOutBack)
                  .OnComplete(() =>
                   {
-                      transform.SetParent(snapPoint.root);
-                      snapPoints.Sort((a, b) =>
-                          Vector3.Distance(snapPoint.position, a.transform.position).CompareTo(
-                              Vector3.Distance(snapPoint.position, b.transform.position)));
 
-                      snapPoints[0].isOccupied = true;
+                      transform.SetParent(point.transform.root);
+
+                      // snapPoints[0].isOccupied = true;
                   });
 
-        snapPoint?.GetComponent<MaterialPropertyHandler>()
-                                 .SetColor(new Color(1, 1, 1, 0f));
+        point?.GetComponent<MaterialPropertyHandler>().SetColor(new Color(1, 1, 1, 0f));
 
         // m_currentContactCollider.transform.parent.GetComponent<IMagnetBehaviour>()
         // .SetSnapPoint(m_currentContactCollider.transform);
 
-        snapPoint.GetComponent<Collider>().enabled = false;
-        snapPoint.GetComponent<SnapPoint>().isOccupied = true;
+        // snapPoint.GetComponent<Collider>().enabled = false;
+        // snapPoint.GetComponent<SnapPoint>().isOccupied = true;
+
+        print($"BALLMAGNET");
+        print($"OriginalNodeName: {originalNode.name}"); //Rod_i
+        //print($"SnapNodeName: {snapPoints1.name} with Parent: {snapPoints1.transform.parent.name}"); //XYZ with Ball_1
 
 
+            point.transform.parent.GetComponent<IMagnetBehaviour>()
+                        .GetNode(point.GetComponent<SnapPoint>().snapDirection)
+                        .SetChildNode(point.transform);
 
 
-        var colliders = transform.GetComponentsInChildren<Collider>();
+            var pole = GetInverseDirection(point.GetComponent<SnapPoint>().snapDirection);
 
-        foreach (var collider in colliders)
+            originalNode.GetComponent<IMagnetBehaviour>().GetNode(pole).SetChildNode(point.transform.parent);
+
+
+        // foreach (var contactPoint in contactPoints)
+        // {
+        //     contactPoint.transform.parent.GetComponent<IMagnetBehaviour>()
+        //                 .GetNode(contactPoint.GetComponent<SnapPoint>().snapDirection)
+        //                 .SetChildNode(contactPoint.transform);
+        //
+        //
+        //     var pole = GetInverseDirection(contactPoint.GetComponent<SnapPoint>().snapDirection);
+        //
+        //     originalNode.GetComponent<IMagnetBehaviour>().GetNode(pole).SetChildNode(contactPoint.transform.parent);
+        // }
+    }
+
+    private static SnapDirection GetInverseDirection(SnapDirection direction)
+    {
+        switch (direction)
         {
-            collider.enabled = false;
+            case SnapDirection.Up:
+               return SnapDirection.Down;
+                break;
+            case SnapDirection.Down:
+                return SnapDirection.Up;
+                break;
+            case SnapDirection.North:
+                return SnapDirection.South;
+                break;
+            case SnapDirection.South:
+                return SnapDirection.North;
+                break;
+            case SnapDirection.East:
+                return SnapDirection.West;
+                break;
+            case SnapDirection.West:
+                return SnapDirection.East;
+                break;
+            case SnapDirection.NorthEast:
+                return SnapDirection.SouthWest;
+                break;
+            case SnapDirection.NorthWest:
+                return SnapDirection.SouthEast;
+                break;
+            case SnapDirection.SouthEast:
+                return SnapDirection.NorthWest;
+                break;
+            case SnapDirection.SouthWest:
+                return SnapDirection.NorthEast;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
+    }
 
+    public override SnapPoint GetNode(SnapDirection snapDirection)
+    {
+        return snapPoints.Find(point => point.snapDirection == snapDirection);
 
     }
 }

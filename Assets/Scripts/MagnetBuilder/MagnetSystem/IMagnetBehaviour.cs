@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using MagnetBuilder.MagnetSystem;
+using UnityEngine;
 
 public interface IMagnetBehaviour
 {
@@ -8,5 +9,7 @@ public interface IMagnetBehaviour
 	void DragMode();
 	void SetSnapPoint();
 
-	void SnapMagnet(Transform snapPoint);
+	void SnapMagnet(Transform originalNode, Collider[] contactPoints);
+
+	SnapPoint GetNode(SnapDirection snapDirection);
 }

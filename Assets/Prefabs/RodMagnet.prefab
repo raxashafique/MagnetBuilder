@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 3153096333053589808}
   - component: {fileID: 7735075173996140164}
   m_Layer: 8
-  m_Name: BallMagnetB
+  m_Name: ConnectionSouth
   m_TagString: BallSnapPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -189,6 +189,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   snapDirection: 3
   isOccupied: 0
+  parentNode: {fileID: 0}
+  childNode: {fileID: 0}
 --- !u!114 &7735075173996140164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,7 +218,7 @@ GameObject:
   - component: {fileID: 3153096333757016896}
   - component: {fileID: 3790982159587653488}
   m_Layer: 8
-  m_Name: BallMagnetA
+  m_Name: ConnectionNorth
   m_TagString: BallSnapPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -310,6 +312,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   snapDirection: 2
   isOccupied: 0
+  parentNode: {fileID: 0}
+  childNode: {fileID: 0}
 --- !u!114 &3790982159587653488
 MonoBehaviour:
   m_ObjectHideFlags: 0
