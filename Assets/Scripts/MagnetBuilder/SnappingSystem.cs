@@ -46,7 +46,7 @@ public class SnappingSystem : MonoBehaviour, IDragHandler, IPointerUpHandler, IP
 
 		if (m_currentContactCollider != m_inContactColliders[0])
 		{
-			m_currentContactCollider.GetComponent<MaterialPropertyHandler>()
+			m_currentContactCollider?.GetComponent<MaterialPropertyHandler>()
 			                         .SetColor(new Color(1, 1, 1, 0f));
 		}
 
@@ -95,7 +95,7 @@ public class SnappingSystem : MonoBehaviour, IDragHandler, IPointerUpHandler, IP
 	public void OnPointerUp(PointerEventData eventData)
 	{
 		//print($"OnPointerUp");
-		if (m_magnetBehaviour.IsSnapped || m_currentContactCollider.GetComponent<SnapPoint>().isOccupied)
+		if (m_magnetBehaviour.IsSnapped&&m_currentContactCollider==null)
 			return;
 
 		m_magnetBehaviour.SnapMagnet(this.transform, m_currentContactCollider.transform);
