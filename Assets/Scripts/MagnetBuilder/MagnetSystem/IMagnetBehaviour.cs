@@ -12,4 +12,5 @@ public interface IMagnetBehaviour
 	void SnapMagnet(Transform originalNode, Transform contactPoint);
 
 	SnapPoint GetNode(SnapDirection snapDirection);
+
 }

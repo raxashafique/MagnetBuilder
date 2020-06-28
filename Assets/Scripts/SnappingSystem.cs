@@ -96,7 +96,7 @@ public class SnappingSystem : MonoBehaviour, IDragHandler, IPointerUpHandler, IP
 
 	public void OnPointerUp(PointerEventData eventData)
 	{
-		print($"OnPointerUp");
+		//print($"OnPointerUp");
 		if (m_magnetBehaviour.IsSnapped || m_currentContactCollider.GetComponent<SnapPoint>().isOccupied)
 			return;
 
@@ -108,6 +108,6 @@ public class SnappingSystem : MonoBehaviour, IDragHandler, IPointerUpHandler, IP
 
 	public void OnPointerDown(PointerEventData eventData)
 	{
-		print($"OnPointerDown");
+		//print($"OnPointerDown");
 	}
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1633039948}
   m_Layer: 0
   m_Name: RodMagnet
-  m_TagString: Untagged
+  m_TagString: RodMagnet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 3153096333053589808}
   - component: {fileID: 7735075173996140164}
   m_Layer: 8
-  m_Name: ConnectionSouth
+  m_Name: RodSouth
   m_TagString: BallSnapPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 3153096333757016896}
   - component: {fileID: 3790982159587653488}
   m_Layer: 8
-  m_Name: ConnectionNorth
+  m_Name: RodNorth
   m_TagString: BallSnapPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -333,6 +333,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2246814123075267031}
     m_Modifications:
+    - target: {fileID: 1890376494632811640, guid: 43345102d5ea7d949b076d093e1bb9d5,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1890376494632811643, guid: 43345102d5ea7d949b076d093e1bb9d5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -393,7 +398,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: CylinderMagnet
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 1890376494632811647, guid: 43345102d5ea7d949b076d093e1bb9d5,
+        type: 3}
+      propertyPath: m_TagString
+      value: RodMagnet
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1890376494632811640, guid: 43345102d5ea7d949b076d093e1bb9d5, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 43345102d5ea7d949b076d093e1bb9d5, type: 3}
 --- !u!4 &2246814122050554558 stripped
 Transform:

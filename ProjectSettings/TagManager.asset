@@ -6,6 +6,8 @@ TagManager:
   tags:
   - RodSnapPoint
   - BallSnapPoint
+  - BallMagnet
+  - RodMagnet
   layers:
   - Default
   - TransparentFX

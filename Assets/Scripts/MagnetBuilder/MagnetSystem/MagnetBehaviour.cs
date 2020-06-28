@@ -48,7 +48,7 @@ public abstract class MagnetBehaviour : MonoBehaviour, IMagnetBehaviour
 
 	public virtual void DragMode()
 	{
-		print($"DragMode");
+		//print($"DragMode");
 		isSnapped = false;
 		gameObject.layer = LayerMask.NameToLayer("Default");
 		foreach (var snapPoint in snapPoints)
